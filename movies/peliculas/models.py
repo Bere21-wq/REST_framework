@@ -23,7 +23,7 @@ class Pelicula(models.Model):
     clasificacion = models.CharField(max_length=1, choices=CLASIFICACION)
 
     def __str__(self):
-    return self.nombre
+        return self.nombre
 
 class Detalles(models.Model):
     """
@@ -34,5 +34,5 @@ class Detalles(models.Model):
     costo = models.IntegerField()
 
     def __str__(self):
-    return self.nombre
+        return self.nombre
 
