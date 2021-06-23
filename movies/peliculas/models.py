@@ -31,7 +31,7 @@ class Detalles(models.Model):
     """
     nombre = models.ForeignKey(Pelicula, on_delete=models.CASCADE)
     musica = models.ForeignKey(Musica, on_delete=models.CASCADE)
-    costo = models.IntegerField()
+    costo = models.DecimalField(max_digits=10, decimal_places= 3)
 
     def __str__(self):
         return self.nombre
