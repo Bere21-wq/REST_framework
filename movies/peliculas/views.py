@@ -1,14 +1,16 @@
 from rest_framework.viewsets import ModelViewSet
 
-from rest_framework.generics import ListAPIView
-from rest_framework.generics import CreateAPIView
-from rest_framework.generics import RetrieveAPIView
-from rest_framework.generics import UpdateAPIView
-from rest_framework.generics import DestroyAPIView
-
-from peliculas.models import Pelicula, Director
-from peliculas.serializers import PeliculaSerializer
+from peliculas.models import Pelicula, Director, Detalles
+from peliculas.serializers import PeliculaSerializer, DirectorSerializer, DetallesSerializer
 
 class PeliculaViewSet(ModelViewSet):
-    queryset = Pelicula.objects.all() #.select_related('director_pelicula')
+    queryset = Pelicula.objects.all().select_related('director_pelicula')
     serializer_class = PeliculaSerializer
+
+class DirectorViewSet(ModelViewSet):
+    queryset = Director.objects.all()
+    serializer_class = DirectorSerializer
+
+class DetallesViewSet(ModelViewSet):
+    queryset = Detalles.objects.all().select_related('nombre', 'musica')
+    serializer_class = DetallesSerializer
