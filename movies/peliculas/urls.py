@@ -32,5 +32,5 @@ urlpatterns = [
     path('director/', director_list),
     path('director/<int:pk>/', director_detail),
     path('detalles/', detalles_list),
-    path('detalles/<int:pk>', detalles_list),
+    path('detalles/<int:pk>/', detalles_detail),
 ]

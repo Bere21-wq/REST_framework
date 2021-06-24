@@ -20,6 +20,8 @@ class DetallesSerializer(serializers.ModelSerializer):
     class Meta:
         model = Detalles
         fields = '__all__'
-        extra_kwargs = {'nombre': {'write_only':True}}
-        extra_kwargs = {'musica': {'write_only':True}}
+        extra_kwargs = {
+            'nombre': {'write_only':True},
+            'musica': {'write_only':True}
+        }
 
