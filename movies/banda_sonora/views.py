@@ -1,3 +1,9 @@
-from django.shortcuts import render
+from rest_framework.viewsets import ModelViewSet
 
-# Create your views here.
+from banda_sonora.models import Musica
+from banda_sonora.serializers import MusicaSerializer
+
+class MusicaViewSet(ModelViewSet):
+    queryset = Musica.objects.all()
+    serializer_class = MusicaSerializer
+

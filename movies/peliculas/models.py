@@ -4,6 +4,9 @@ from banda_sonora.models import Musica
 class Director(models.Model):
     director = models.CharField(max_length=200)
 
+    def __str__(self):
+        return self.director
+
 class Pelicula(models.Model):
     Terror = 'TERROR'
     Comedia = 'COMEDIA'
@@ -27,12 +30,12 @@ class Pelicula(models.Model):
 
 class Detalles(models.Model):
     """
-    Este sera el modelo para la tabla con los tres modelos construidos de ambas aplicaciones
+    Este sera el modelo para la tabla con los construidos de ambas aplicaciones
     """
     nombre = models.ForeignKey(Pelicula, on_delete=models.CASCADE)
     musica = models.ForeignKey(Musica, on_delete=models.CASCADE)
     costo = models.DecimalField(max_digits=10, decimal_places= 3)
 
     def __str__(self):
-        return self.nombre
+        return f'{self.nombre}'
 
