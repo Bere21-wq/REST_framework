@@ -15,9 +15,20 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import include, path
+from peliculas.views import DetallesViewSet
+
+detalles_list = DetallesViewSet.as_view({'get': 'list', 'post': 'create'})
+detalles_detail = DetallesViewSet.as_view({
+    'get':'retrieve', 
+    'put':'update', 
+    'patch': 'partial_update',
+    'delete': 'destroy',
+})
 
 urlpatterns = [
     path('banda_sonora/', include('banda_sonora.urls')),
     path('peliculas/', include('peliculas.urls')),
+    path('detalles/', detalles_list),
+    path('detalles/<int:pk>/', detalles_detail),
     path('admin/', admin.site.urls),
 ]

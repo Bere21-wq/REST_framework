@@ -7,13 +7,19 @@ class MusicaNestedSerializer(serializers.ModelSerializer):
         model = Musica
         fields = '__all__'
 
+
 class DetallesSerializer(serializers.ModelSerializer):
-    musica = MusicaNestedSerializer(read_only=True)
-    musica_entrada = serializers.PrimaryKeyRelatedField(queryset=Musica.objects.all(), many=True, write_only=True)
+    # musica          = MusicaNestedSerializer(read_only=True)
+    nombre_representacion_pelicula = serializers.CharField(source='nombre.nombre', read_only=True)
+    representacion_musica = MusicaNestedSerializer(source='musica', read_only=True)
+    # musica_entrada  = serializers.PrimaryKeyRelatedField(queryset=Musica.objects.all(), many=False, write_only=True)
     class Meta:
         model = Detalles
         fields = '__all__'
-        
+        # extra_kwargs = {
+        #     'nombre': {'write_only':True}
+        # }
+    
 class PeliculaSerializer(serializers.ModelSerializer):
     musica = DetallesSerializer(source='detalles', many=True, read_only=True)
     direccion = serializers.CharField(source='director_pelicula.director', read_only=True)
@@ -25,6 +31,7 @@ class PeliculaSerializer(serializers.ModelSerializer):
         extra_kwargs = {'director_pelicula':{'write_only':True}}
     
     def create(self, validated_data):
+        print(validated_data)
         musica_data = validated_data.pop('musica_entrada')
         costo_data = validated_data.pop('detalles')
         cost = costo_data.get('costo')
