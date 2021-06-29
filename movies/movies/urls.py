@@ -43,4 +43,5 @@ urlpatterns = [
     path('directores/', director_list),
     path('directores/<int:pk>/', director_detail),
     path('admin/', admin.site.urls),
+    path('api-auth/', include('rest_framework.urls')),
 ]

@@ -24,6 +24,7 @@ class Pelicula(models.Model):
     genero_pelicula = models.CharField(max_length=100, choices=GENRE )
     director_pelicula = models.ForeignKey(Director, on_delete=models.CASCADE)
     clasificacion = models.CharField(max_length=1, choices=CLASIFICACION)
+    owner = models.ForeignKey('auth.User', related_name='duenio', on_delete=models.CASCADE)
 
     def __str__(self):
         return self.nombre
