@@ -32,8 +32,8 @@ class Detalles(models.Model):
     """
     Este sera el modelo para la tabla con los construidos de ambas aplicaciones
     """
-    nombre = models.ForeignKey(Pelicula, on_delete=models.CASCADE)
-    musica = models.ForeignKey(Musica, on_delete=models.CASCADE)
+    nombre = models.ForeignKey(Pelicula, on_delete=models.CASCADE, related_name='detalles')
+    musica = models.ForeignKey(Musica, on_delete=models.CASCADE, related_name='detalles')
     costo = models.DecimalField(max_digits=10, decimal_places= 3)
 
     def __str__(self):
