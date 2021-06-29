@@ -38,7 +38,6 @@ director_detail = DirectorViewSet.as_view({
 urlpatterns = [
     path('banda_sonora/', include('banda_sonora.urls')),
     path('peliculas/', include('peliculas.urls')),
-    path('peliculas/', include('peliculas.urls')),
     path('detalles/', detalles_list),
     path('detalles/<int:pk>/', detalles_detail),
     path('directores/', director_list),
