@@ -23,6 +23,10 @@ class PeliculaViewSet(ModelViewSet):
     def perform_create(self, serializer):
         serializer.save(owner=self.request.user)
     
+    def list(self, request, *args, **kwargs):
+        print(self.request.user)
+        return super(PeliculaViewSet, self).list(request, *args, **kwargs)
+    
 
 class DirectorViewSet(ModelViewSet):
     permission_classes = [permissions.IsAuthenticated]
