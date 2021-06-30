@@ -38,10 +38,10 @@ director_detail = DirectorViewSet.as_view({
 urlpatterns = [
     path('banda_sonora/', include('banda_sonora.urls')),
     path('peliculas/', include('peliculas.urls')),
-    path('peliculas/', include('peliculas.urls')),
     path('detalles/', detalles_list),
     path('detalles/<int:pk>/', detalles_detail),
     path('directores/', director_list),
     path('directores/<int:pk>/', director_detail),
     path('admin/', admin.site.urls),
+    path('api-auth/', include('rest_framework.urls')),
 ]

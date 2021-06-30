@@ -12,6 +12,7 @@ class Musica(models.Model):
     artista = models.CharField(max_length=200)
     año = models.DateField()
     genero = models.CharField(max_length=100, choices=GENRE)
+    owner = models.ForeignKey('auth.User', related_name='snippets', on_delete=models.CASCADE)
     
     def __str__(self):
         return self.cancion

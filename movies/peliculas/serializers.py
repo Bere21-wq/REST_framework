@@ -2,6 +2,15 @@ from rest_framework import serializers
 from peliculas.models import Pelicula, Detalles, Director
 from banda_sonora.models import Musica
 
+from django.contrib.auth.models import User
+
+class UserSerializer(serializers.ModelSerializer):
+    duenio = serializers.PrimaryKeyRelatedField(many=True, queryset=Pelicula.objects.all())
+
+    class Meta:
+        model = User
+        fields = ['id', 'username', 'duenio']
+
 class MusicaNestedSerializer(serializers.ModelSerializer):
     class Meta:
         model = Musica
@@ -18,6 +27,7 @@ class DetallesSerializer(serializers.ModelSerializer):
         # }
 
 class PeliculaSerializer(serializers.ModelSerializer):
+    owner = serializers.ReadOnlyField(source='owner.username')
     representacion_detalles   =   DetallesSerializer(source='detalles', many=True, read_only=True)
     direccion                 =   serializers.CharField(source='director_pelicula.director', read_only=True)
     banda_sonora              =   serializers.PrimaryKeyRelatedField(queryset=Musica.objects.all(), many=True, write_only=True)
