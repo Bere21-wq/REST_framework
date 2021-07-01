@@ -11,8 +11,8 @@ musica_detail = MusicaViewSet.as_view({
 })
 
 urlpatterns = [
-    path('', musica_list),
-    path('<int:pk>', musica_detail),
+    path('', musica_list, name='index'),
+    path('<int:pk>', musica_detail, name='detail'),
     path('users/', UserList.as_view()),
     path('users/<int:pk>/', UserDetail.as_view()),
 ]
