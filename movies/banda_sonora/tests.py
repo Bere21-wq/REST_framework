@@ -132,6 +132,21 @@ class TestMusicaView(APITestCase):
         self.assertEqual(respuesta_actualizada.data['artista'], valor_consulta.artista)
         self.assertEqual(respuesta_actualizada.data['año'], str(valor_consulta.año))
 
+    def test_PATCH_success(self):
+        """
+        Prueba si el usuario loggeado puede actualizar PARCIALMENTE 
+        un registro.
+        """
+        self.client.login(username='testuser1', password='1X<ISRUkw+tuK')
+        actualizacion = reverse('musica:detail', kwargs={'pk' : self.musica1.id})
+        data_info= {
+                    'cancion': 'cancion que deberia estar incluida en mi lista'
+                    }
+        respuesta_actualizada = self.client.patch(actualizacion, data_info)
+        self.assertEqual(200, respuesta_actualizada.status_code)
+        resultado = Musica.objects.get(id=respuesta_actualizada.data['id'])
+        self.assertEqual(respuesta_actualizada.data['cancion'], resultado.cancion)
+
     def test_DELETE(self):
         self.client.login(username='testuser1', password='1X<ISRUkw+tuK')
         url_delete = reverse('musica:detail', kwargs={'pk' : self.musica1.id})
