@@ -14,34 +14,40 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import include, path
-from peliculas.views import DetallesViewSet, DirectorViewSet
+from django.urls import include
+from django.urls import path
 
-detalles_list = DetallesViewSet.as_view({'get': 'list', 'post': 'create'})
-detalles_detail = DetallesViewSet.as_view({
-    'get':'retrieve', 
-    'put':'update', 
-    'patch': 'partial_update',
-    'delete': 'destroy',
-})
+from peliculas.views import DetallesViewSet
+from peliculas.views import DirectorViewSet
 
-director_list = DirectorViewSet.as_view({'get': 'list', 'post': 'create'})
-director_detail = DirectorViewSet.as_view({
-    'get':'retrieve', 
-    'put':'update', 
-    'patch': 'partial_update',
-    'delete': 'destroy',
-})
+detalles_list = DetallesViewSet.as_view({"get": "list", "post": "create"})
+detalles_detail = DetallesViewSet.as_view(
+    {
+        "get": "retrieve",
+        "put": "update",
+        "patch": "partial_update",
+        "delete": "destroy",
+    }
+)
 
+director_list = DirectorViewSet.as_view({"get": "list", "post": "create"})
+director_detail = DirectorViewSet.as_view(
+    {
+        "get": "retrieve",
+        "put": "update",
+        "patch": "partial_update",
+        "delete": "destroy",
+    }
+)
 
 
 urlpatterns = [
-    path('banda_sonora/', include('banda_sonora.urls')),
-    path('peliculas/', include('peliculas.urls')),
-    path('detalles/', detalles_list),
-    path('detalles/<int:pk>/', detalles_detail),
-    path('directores/', director_list),
-    path('directores/<int:pk>/', director_detail),
-    path('admin/', admin.site.urls),
-    path('api-auth/', include('rest_framework.urls')),
+    path("banda_sonora/", include("banda_sonora.urls")),
+    path("peliculas/", include("peliculas.urls")),
+    path("detalles/", detalles_list),
+    path("detalles/<int:pk>/", detalles_detail),
+    path("directores/", director_list),
+    path("directores/<int:pk>/", director_detail),
+    path("admin/", admin.site.urls),
+    path("api-auth/", include("rest_framework.urls")),
 ]
