@@ -1,0 +1,28 @@
+version: "3.9"
+
+services:
+
+    BD:
+        image: postgres:13.3
+        restart: always
+        environment:
+          POSTGRES_PASSWORD: password
+          POSTGRES_USER: user
+          POSTGRES_DB: movies_DB
+        ports:
+            - "5432:5432"
+        volumes:
+            - postgres:/var/lib/postgresql/data
+
+    web:
+        build: .
+        command: python manage.py runserver 0.0.0.0:8000
+        volumes:
+          - ./movies/:/code
+        ports:
+          - "8000:8000"
+        depends_on:
+          - BD
+volumes:
+    postgres:
+    
