@@ -17,8 +17,8 @@ pelicula_detail = PeliculaViewSet.as_view(
 
 
 urlpatterns = [
-    path("", pelicula_list),
-    path("<int:pk>/", pelicula_detail),
+    path("", pelicula_list, name="index"),
+    path("<int:pk>/", pelicula_detail, name="detail"),
     path("users/", UserList.as_view()),
     path("users/<int:pk>/", UserDetail.as_view()),
 ]
