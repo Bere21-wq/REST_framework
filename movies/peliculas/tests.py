@@ -118,7 +118,6 @@ class TestPeliculasView(APITestCase):
         Prueba si un usuario loggeado puede crear un nuevo registro.
         """
         self.client.login(username="testuser1", password="1X<ISRUkw+tuK")
-        #Iterar sobre la banda_sonora
         data_info = {
                     "banda_sonora": [self.banda_sonora_prueba_1.id],
                     "costo_entrada": 6,
@@ -128,7 +127,6 @@ class TestPeliculasView(APITestCase):
                     "clasificacion": "C",
                     }
         solicitud_post = self.client.post(self.url_response, data_info)
-        print(solicitud_post.data)
         self.assertEqual(201, solicitud_post.status_code)
         
     def test_crear_POST_sin_autenticacion(self):
@@ -151,7 +149,6 @@ class TestPeliculasView(APITestCase):
         Prueba si el numero de elementos 'n' en la lista aumenta
         a 'n+1' después de crear un registro.
         """
-        #Tambien deben contarse el numero de elementos en tabla Detalles
         self.client.login(username="testuser1", password="1X<ISRUkw+tuK")
         num_elementos_pelicula_pre_post = Pelicula.objects.count()
         num_elementos_detalles_pre_post = Detalles.objects.count()
@@ -170,9 +167,6 @@ class TestPeliculasView(APITestCase):
         self.assertEqual(num_elementos_detalle_pos_post, num_elementos_detalles_pre_post+1)
         self.assertEqual(201, solicitud_post.status_code)
     
-
-    #Corregir el nombre de la funcion.
-    #Comparar con la representacion de los detalles, tal como hiciste en la prueba de listado.
     def test_elemento_post_coincide_con_BD(self):
         """
         Comprueba si un registro recién creado aparece en
