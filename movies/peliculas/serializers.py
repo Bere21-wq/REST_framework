@@ -56,7 +56,6 @@ class PeliculaSerializer(serializers.ModelSerializer):
         extra_kwargs = {"director_pelicula": {"write_only": True}}
 
     def create(self, validated_data):
-        print(validated_data)
         musica_data = validated_data.pop("banda_sonora")
         costo_data = validated_data.pop("detalles")
         cost = costo_data.get("costo")
@@ -64,7 +63,6 @@ class PeliculaSerializer(serializers.ModelSerializer):
         if len(musica_data) != 0:
             pelicula = Pelicula.objects.create(**validated_data)
             for detail in musica_data:
-                print(detail)
                 Detalles.objects.create(nombre=pelicula, musica=detail, costo=cost)
             return pelicula
         else:

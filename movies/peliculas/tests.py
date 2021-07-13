@@ -76,17 +76,13 @@ class TestPeliculasView(APITestCase):
         """
         self.client.login(username="testuser1", password="1X<ISRUkw+tuK")
         solicitud_get = self.client.get(self.url_response)
-        print(solicitud_get.data)
     
         for i in solicitud_get.data:
             pelicula_id = Pelicula.objects.get(id=i["id"])
             self.assertEqual(i["nombre"], pelicula_id.nombre)
             self.assertEqual(i["owner"], pelicula_id.owner.username)
-            print(i["representacion_detalles"])
             for j in i["representacion_detalles"]:
-                print(j)
                 detalles = Detalles.objects.get(id=j["id"])
-                print(detalles.id)
                 self.assertEqual(detalles.nombre.nombre, j["nombre_representacion_pelicula"])
                 self.assertEqual(detalles.musica.cancion, j["representacion_musica"]["cancion"])
                 self.assertEqual(str(detalles.costo), j["costo"])
@@ -98,7 +94,6 @@ class TestPeliculasView(APITestCase):
         self.client.login(username="testuser1", password="1X<ISRUkw+tuK")
         item = reverse("pelicula:detail", kwargs={"pk": self.pelicula1.id})
         solicitud_get = self.client.get(item)
-        print(solicitud_get.data)
         self.assertEqual(200, solicitud_get.status_code)
         item_en_BD = Pelicula.objects.get(id=solicitud_get.data["id"])
         self.assertEqual(solicitud_get.data["nombre"], item_en_BD.nombre)
@@ -107,7 +102,6 @@ class TestPeliculasView(APITestCase):
 
         for i in solicitud_get.data["representacion_detalles"]:
             item_detalles_en_BD = Detalles.objects.get(id=i["id"])
-            print(item_detalles_en_BD.id)
             self.assertEqual(i["representacion_musica"]["id"], item_detalles_en_BD.musica.id)
             self.assertEqual(i["nombre_representacion_pelicula"], str(item_detalles_en_BD.nombre))
             self.assertEqual(i["costo"], str(item_detalles_en_BD.costo))
@@ -134,13 +128,13 @@ class TestPeliculasView(APITestCase):
         Prueba si un usuario NO AUTORIZADO puede crear un registro de peliculas.
         """
         data_info = {
-            "banda_sonora": [self.banda_sonora_prueba_1.id],
-            "costo_entrada": 6,
-            "nombre": "pelicula para prueba post",
-            "genero_pelicula": "DRAMA",
-            "director_pelicula": self.director_prueba_1.id,
-            "clasificacion": "C",
-            }
+                    "banda_sonora": [self.banda_sonora_prueba_1.id],
+                    "costo_entrada": 6,
+                    "nombre": "pelicula para prueba post",
+                    "genero_pelicula": "DRAMA",
+                    "director_pelicula": self.director_prueba_1.id,
+                    "clasificacion": "C",
+                    }
         solicitud_post = self.client.post(self.url_response, data_info)
         self.assertEqual(401, solicitud_post.status_code)
 
@@ -153,13 +147,13 @@ class TestPeliculasView(APITestCase):
         num_elementos_pelicula_pre_post = Pelicula.objects.count()
         num_elementos_detalles_pre_post = Detalles.objects.count()
         data_info = {
-            "banda_sonora": [self.banda_sonora_prueba_1.id],
-            "costo_entrada": 6,
-            "nombre": "pelicula para prueba post",
-            "genero_pelicula": "DRAMA",
-            "director_pelicula": self.director_prueba_1.id,
-            "clasificacion": "C",
-            }
+                    "banda_sonora": [self.banda_sonora_prueba_1.id],
+                    "costo_entrada": 6,
+                    "nombre": "pelicula para prueba post",
+                    "genero_pelicula": "DRAMA",
+                    "director_pelicula": self.director_prueba_1.id,
+                    "clasificacion": "C",
+                    }
         solicitud_post = self.client.post(self.url_response, data_info)
         num_elementos_pelicula_pos_post = Pelicula.objects.count()
         num_elementos_detalle_pos_post = Detalles.objects.count()
@@ -174,13 +168,13 @@ class TestPeliculasView(APITestCase):
         """
         self.client.login(username="testuser1", password="1X<ISRUkw+tuK")
         data_info = {
-            "banda_sonora": [self.banda_sonora_prueba_1.id],
-            "costo_entrada": 6,
-            "nombre": "pelicula para prueba post",
-            "genero_pelicula": "DRAMA",
-            "director_pelicula": self.director_prueba_1.id,
-            "clasificacion": "C",
-            }
+                    "banda_sonora": [self.banda_sonora_prueba_2.id, self.banda_sonora_prueba_1.id],
+                    "costo_entrada": 6,
+                    "nombre": "pelicula para prueba post",
+                    "genero_pelicula": "DRAMA",
+                    "director_pelicula": self.director_prueba_1.id,
+                    "clasificacion": "C",
+                    }
         solicitud_post = self.client.post(self.url_response, data_info)
         consulta_BD = Pelicula.objects.get(id=solicitud_post.data["id"])
         self.assertEqual(data_info["nombre"], consulta_BD.nombre)
@@ -189,12 +183,12 @@ class TestPeliculasView(APITestCase):
 
         for i in solicitud_post.data["representacion_detalles"]:
             detalles = Detalles.objects.get(id=i["id"])
-            self.assertEqual(detalles.nombre.nombre, i["nombre_representacion_pelicula"])
-            self.assertEqual(detalles.musica.cancion, i["representacion_musica"]["cancion"])
-            self.assertEqual(str(detalles.costo), i["costo"])
-            for j in data_info["banda_sonora"]:
-                self.assertEqual(detalles.musica.pk, j)
-
+            self.assertEqual(i["nombre_representacion_pelicula"], detalles.nombre.nombre)
+            self.assertEqual(i["representacion_musica"]["cancion"], detalles.musica.cancion)
+            self.assertEqual(i["representacion_musica"]["id"], detalles.musica.id)
+            self.assertEqual(i["costo"], str(detalles.costo))
+            self.assertTrue(i["representacion_musica"]["id"] in data_info["banda_sonora"])
+            
     def test_actualizacion_total_PUT(self):
         """
         Prueba si un usuario loggeado puede actualizar de manera total
@@ -299,7 +293,6 @@ class TestPeliculasView(APITestCase):
             "clasificacion": "A",
             }
         solicitud_actualicacion_parcial = self.client.patch(info_original, data_info)
-        print(solicitud_actualicacion_parcial.data)
         self.assertEqual(200, solicitud_actualicacion_parcial.status_code)
         item_pelicula_actualizado = Pelicula.objects.get(id=solicitud_actualicacion_parcial.data["id"])
         self.assertEqual(solicitud_actualicacion_parcial.data["nombre"], item_pelicula_actualizado.nombre)
