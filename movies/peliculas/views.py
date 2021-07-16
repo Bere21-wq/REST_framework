@@ -25,15 +25,15 @@ class UserDetail(generics.RetrieveAPIView):
 
 class PeliculaViewSet(ModelViewSet):
     permission_classes = [permissions.IsAuthenticated, IsOwnerOrReadOnly]
-    queryset = Pelicula.objects.all().select_related("director_pelicula")
+    queryset = Pelicula.objects.all().select_related("director_pelicula").order_by("id")
     serializer_class = PeliculaSerializer
 
     def perform_create(self, serializer):
         serializer.save(owner=self.request.user)
 
-    def list(self, request, *args, **kwargs):
-        print(self.request.user)
-        return super(PeliculaViewSet, self).list(request, *args, **kwargs)
+    # def list(self, request, *args, **kwargs):
+    #     print(self.request.user)
+    #     return super(PeliculaViewSet, self).list(request, *args, **kwargs)
 
 
 class DirectorViewSet(ModelViewSet):
@@ -44,5 +44,5 @@ class DirectorViewSet(ModelViewSet):
 
 class DetallesViewSet(ModelViewSet):
     permission_classes = [permissions.IsAuthenticated]
-    queryset = Detalles.objects.all().select_related("nombre", "musica")
+    queryset = Detalles.objects.all().select_related("nombre", "musica").order_by("id")
     serializer_class = DetallesSerializer

@@ -38,8 +38,6 @@ class TestMusicaView(APITestCase):
         """
         respuesta = self.client.get(self.response)
         self.assertEqual(200, respuesta.status_code)
-        # print(self.response)
-        # print(respuesta.data)
 
     def test_numero_elementos_BD(self):
         """
@@ -58,11 +56,9 @@ class TestMusicaView(APITestCase):
         respuesta = self.client.get(self.response)
 
         for i in respuesta.data:
-            # print(i)
             v = Musica.objects.get(id=i["id"])
             self.assertEqual(i["artista"], v.artista)
             self.assertEqual(i["owner"], v.owner.username)
-            # print(Musica.objects.filter(id=i['id']).count())
 
     def test_recupera_un_solo_elemento(self):
         """
@@ -70,10 +66,8 @@ class TestMusicaView(APITestCase):
         """
         detalle = reverse("musica:detail", kwargs={"pk": self.musica1.id})
         respuesta = self.client.get(detalle)
-        # print(respuesta.data['id'])
         self.assertEqual(200, respuesta.status_code)
         valor_consulta = Musica.objects.get(id=respuesta.data["id"])
-        # print(valor_consulta)
         self.assertEqual(respuesta.data["cancion"], valor_consulta.cancion)
         self.assertEqual(respuesta.data["artista"], valor_consulta.artista)
         self.assertEqual(respuesta.data["año"], str(valor_consulta.año))
@@ -90,7 +84,6 @@ class TestMusicaView(APITestCase):
             "genero": "Metal",
         }
         respuesta = self.client.post(self.response, data_info)
-        # print(respuesta.data)
         self.assertEqual(201, respuesta.status_code)
 
     def test_crear_POST_sin_autenticacion(self):
@@ -104,7 +97,6 @@ class TestMusicaView(APITestCase):
             "genero": "Metal",
         }
         respuesta = self.client.post(self.response, data_info)
-        # print(respuesta.data)
         self.assertEqual(401, respuesta.status_code)
 
     def test_num_elementos_POST(self):
@@ -138,7 +130,6 @@ class TestMusicaView(APITestCase):
             "genero": "Metal",
         }
         respuesta_post = self.client.post(self.response, data_info)
-        # print(respuesta_post.data['id'])
         valor_consulta = Musica.objects.get(id=respuesta_post.data["id"])
         self.assertEqual(data_info["cancion"], valor_consulta.cancion)
         self.assertEqual(data_info["artista"], valor_consulta.artista)
@@ -158,10 +149,8 @@ class TestMusicaView(APITestCase):
             "genero": "Metal",
         }
         respuesta_actualizada = self.client.put(actualizacion, data_info)
-        print(respuesta_actualizada.data)
         self.assertEqual(200, respuesta_actualizada.status_code)
         valor_consulta = Musica.objects.get(id=respuesta_actualizada.data["id"])
-        # print(valor_consulta)
         self.assertEqual(respuesta_actualizada.data["cancion"], valor_consulta.cancion)
         self.assertEqual(respuesta_actualizada.data["artista"], valor_consulta.artista)
         self.assertEqual(respuesta_actualizada.data["año"], str(valor_consulta.año))
@@ -184,11 +173,9 @@ class TestMusicaView(APITestCase):
         url_delete = reverse("musica:detail", kwargs={"pk": self.musica1.id})
         num_regitros_pre_delete = Musica.objects.all().count()
         respuesta_delete = self.client.delete(url_delete)
-        print(respuesta_delete.data)
         num_regitros_actual = Musica.objects.all().count()
         self.assertEqual(204, respuesta_delete.status_code)
         self.assertEqual(num_regitros_pre_delete - 1, num_regitros_actual)
 
         recuperar_registro = Musica.objects.filter(pk=self.musica1.id).exists()
         self.assertFalse(recuperar_registro)
-        print(recuperar_registro)
